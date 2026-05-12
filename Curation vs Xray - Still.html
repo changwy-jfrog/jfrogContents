@@ -95,9 +95,10 @@
     background: linear-gradient(90deg, #40BE46 0%, #4457B1 100%);
   }
   .building-name {
-    position: absolute; top: 18px; right: 22px;
-    font-size: 12px; font-weight: 700; letter-spacing: 1.4px;
+    position: absolute; top: 18px; right: 28px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
     text-transform: uppercase; color: #5B6B70;
+    white-space: nowrap;
   }
 
   .door {
@@ -121,8 +122,8 @@
 
   /* Curation guard */
   .guard-curation {
-    position: absolute; top: 220px; left: 50px;
-    width: 90px; text-align: center; z-index: 8;
+    position: absolute; top: 220px; left: 30px;
+    width: 130px; text-align: center; z-index: 8;
   }
   .guard-label {
     margin-top: 8px; font-size: 13px; font-weight: 700;
@@ -131,6 +132,7 @@
   .guard-label .role {
     display: block; font-weight: 400; color: #B0BEC2; font-size: 10px;
     margin-top: 3px; letter-spacing: 1px; text-transform: uppercase;
+    white-space: nowrap;
   }
 
   /* Markers (pass/block) */
@@ -178,8 +180,8 @@
 
   /* Xray guard inside */
   .guard-xray {
-    position: absolute; left: 540px; top: 200px;
-    width: 80px; text-align: center; z-index: 10;
+    position: absolute; left: 510px; top: 200px;
+    width: 140px; text-align: center; z-index: 10;
   }
   .guard-xray .label {
     margin-top: 8px; font-size: 13px; font-weight: 700;
@@ -188,15 +190,33 @@
   .guard-xray .label .role {
     display: block; font-weight: 400; color: #B0BEC2; font-size: 10px;
     margin-top: 3px; letter-spacing: 1px; text-transform: uppercase;
+    white-space: nowrap;
   }
   .xray-beam {
     position: absolute; left: 50%; top: 100%;
     transform: translateX(-50%);
-    width: 0; height: 0;
-    border-left: 65px solid transparent;
-    border-right: 65px solid transparent;
-    border-top: 110px solid rgba(64,190,70,0.28);
-    filter: drop-shadow(0 0 10px rgba(64,190,70,0.4));
+    width: 130px; height: 110px;
+    pointer-events: none;
+    clip-path: polygon(38% 0%, 62% 0%, 100% 100%, 0% 100%);
+    background:
+      linear-gradient(
+        180deg,
+        rgba(64,190,70,0.55) 0%,
+        rgba(64,190,70,0.25) 40%,
+        rgba(64,190,70,0.05) 85%,
+        rgba(64,190,70,0) 100%
+      );
+    filter: drop-shadow(0 0 14px rgba(64,190,70,0.45));
+  }
+  .xray-beam::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    height: 18px;
+    top: 36%;
+    background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+    opacity: 0.85;
+    pointer-events: none;
   }
 
   .cve-alert {
@@ -274,9 +294,9 @@
         <div class="pkg-icon">⚠</div>
         <div class="pkg-name">old-jquery</div>
       </div>
-      <!-- Block marker on the bad package nearest the door -->
-      <div class="marker block" style="left: 100px; top: 280px;">✕</div>
-      <div class="marker pass" style="left: 80px; top: 170px;">✓</div>
+      <!-- Block / pass markers as corner badges on each package -->
+      <div class="marker block" style="left: 102px; top: 256px;">✕</div>
+      <div class="marker pass" style="left: 82px; top: 146px;">✓</div>
     </div>
 
     <!-- Building -->

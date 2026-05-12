@@ -157,12 +157,13 @@
   /* Building label */
   .building-name {
     position: absolute;
-    top: 18px; right: 22px;
-    font-size: 12px;
+    top: 18px; right: 28px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 1.4px;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
     color: #5B6B70;
+    white-space: nowrap;
   }
 
   /* DOOR (left side of building) */
@@ -224,9 +225,9 @@
   .guard-curation {
     position: absolute;
     top: 235px;
-    left: 60px;
+    left: 40px;
     z-index: 8;
-    width: 90px;
+    width: 130px;
     text-align: center;
   }
   .guard-curation .body { animation: bob 2.6s ease-in-out infinite; transform-origin: center bottom; }
@@ -245,7 +246,7 @@
     letter-spacing: 0.4px;
     line-height: 1.2;
   }
-  .guard-label .role { display: block; font-weight: 400; color: #B0BEC2; font-size: 10px; margin-top: 2px; letter-spacing: 1px; text-transform: uppercase; }
+  .guard-label .role { display: block; font-weight: 400; color: #B0BEC2; font-size: 10px; margin-top: 2px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
 
   /* ---------- INTERIOR SHELVES ---------- */
   .shelves {
@@ -422,7 +423,7 @@
   .guard-xray {
     position: absolute;
     z-index: 10;
-    width: 80px;
+    width: 140px;
     text-align: center;
     transition: left 1.4s cubic-bezier(0.22, 1, 0.36, 1), top 1.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -1190,7 +1191,7 @@
     const r = slotCenters[slotIdx];
     const jx = jitter ? (Math.random() * 2 - 1) * jitter : 0;
     const jy = jitter ? (Math.random() * 2 - 1) * (jitter * 0.4) : 0;
-    const gx = clampX(r.x - 40 + jx);
+    const gx = clampX(r.x - 70 + jx);
     const gy = clampY(laneY(slotIdx) + jy);
     xrayGuard.style.left = gx + 'px';
     xrayGuard.style.top  = gy + 'px';
