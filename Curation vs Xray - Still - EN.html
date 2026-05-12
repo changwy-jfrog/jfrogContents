@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JFrog Curation vs Xray — Still</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0C1D37; font-family: "Open Sans", system-ui, sans-serif; color: #fff; }
+  body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+
+  .stage {
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(68,87,177,0.25) 0%, transparent 55%),
+      radial-gradient(ellipse at 75% 80%, rgba(64,190,70,0.10) 0%, transparent 55%),
+      linear-gradient(180deg, #0C1D37 0%, #080C25 100%);
+    overflow: hidden;
+  }
+  .stage::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .header {
+    position: absolute; top: 36px; left: 48px; right: 48px;
+    display: flex; align-items: center; justify-content: space-between; z-index: 30;
+  }
+  .header h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.3px; }
+  .header h1 .green { color: #40BE46; }
+  .header h1 .blue { color: #6281CF; }
+  .header .sub { font-size: 16px; color: #B0BEC2; margin-top: 6px; }
+  .logo { height: 30px; opacity: 0.85; }
+
+  .scene { position: absolute; top: 150px; left: 60px; right: 60px; bottom: 200px; }
+
+  .outside-label, .inside-label {
+    position: absolute; top: 0;
+    font-size: 13px; font-weight: 700; letter-spacing: 1.6px;
+    text-transform: uppercase; color: #718288;
+  }
+  .outside-label { left: 0; }
+  .inside-label { left: 360px; }
+
+  /* Supply (registries) */
+  .supply { position: absolute; left: 0; top: 30px; width: 320px; }
+  .supply-title { font-size: 13px; color: #8C9FA4; margin-bottom: 14px; font-weight: 600; letter-spacing: 0.5px; }
+  .registry-stack { display: flex; flex-direction: column; gap: 10px; }
+  .registry {
+    background: linear-gradient(135deg, #14193D 0%, #1B2147 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; color: #CED7D9;
+  }
+  .registry .dot { width: 8px; height: 8px; border-radius: 50%; background: #6281CF; box-shadow: 0 0 8px #6281CF; }
+  .registry b { color: #fff; font-weight: 600; }
+
+  /* Incoming packages on path */
+  .pkg-trail {
+    position: absolute;
+    left: 230px; top: 30px;
+    width: 140px; height: 100%;
+  }
+  .package {
+    position: absolute;
+    width: 56px; height: 56px;
+    border-radius: 10px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #fff;
+    background: linear-gradient(135deg, #4457B1 0%, #1B2147 100%);
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  }
+  .package.bad { background: linear-gradient(135deg, #FF6B6B 0%, #a23b3b 100%); border-color: rgba(255,200,200,0.5); }
+  .package .pkg-icon { font-size: 18px; line-height: 1; }
+  .package .pkg-name { font-size: 9px; line-height: 1; margin-top: 3px; opacity: 0.95; }
+
+  /* Building */
+  .building {
+    position: absolute; left: 360px; top: 30px;
+    width: 1120px; height: 540px;
+    background: linear-gradient(180deg, #0e1a35 0%, #0a1428 100%);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 18px; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset, 0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .building::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, #40BE46 0%, #4457B1 100%);
+  }
+  .building-name {
+    position: absolute; top: 18px; right: 22px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.4px;
+    text-transform: uppercase; color: #5B6B70;
+  }
+
+  .door {
+    position: absolute; top: 180px; left: -2px;
+    width: 36px; height: 200px;
+    background: linear-gradient(90deg, #40BE46 0%, #36A13B 100%);
+    border-top-right-radius: 18px; border-bottom-right-radius: 18px;
+    border: 2px solid rgba(255,255,255,0.15); border-left: none;
+  }
+  .door::after {
+    content: ""; position: absolute; top: 50%; right: 6px;
+    width: 6px; height: 6px; border-radius: 50%; background: #fde6ad; transform: translateY(-50%);
+  }
+  .door-frame {
+    position: absolute; top: 170px; left: -10px;
+    width: 60px; height: 220px;
+    border: 2px dashed rgba(64,190,70,0.6);
+    border-radius: 14px;
+    box-shadow: 0 0 30px rgba(64,190,70,0.35);
+  }
+
+  /* Curation guard */
+  .guard-curation {
+    position: absolute; top: 220px; left: 50px;
+    width: 90px; text-align: center; z-index: 8;
+  }
+  .guard-label {
+    margin-top: 8px; font-size: 13px; font-weight: 700;
+    color: #40BE46; letter-spacing: 0.3px; line-height: 1.2;
+  }
+  .guard-label .role {
+    display: block; font-weight: 400; color: #B0BEC2; font-size: 10px;
+    margin-top: 3px; letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* Markers (pass/block) */
+  .marker {
+    position: absolute; width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 900; color: #fff;
+  }
+  .marker.block { background: #FF6B6B; box-shadow: 0 0 16px rgba(255,107,107,0.7); }
+  .marker.pass { background: #40BE46; box-shadow: 0 0 16px rgba(64,190,70,0.6); }
+
+  /* Shelves */
+  .shelves {
+    position: absolute; left: 170px; top: 90px; right: 50px; bottom: 50px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 18px 22px; padding: 20px;
+  }
+  .shelf-slot {
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed rgba(255,255,255,0.08);
+    border-radius: 10px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stored {
+    width: 64px; height: 64px; border-radius: 10px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700;
+    background: linear-gradient(135deg, #4457B1 0%, #1B2147 100%);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .stored .icon { font-size: 18px; }
+  .stored .name { font-size: 9px; margin-top: 3px; letter-spacing: 0.2px; opacity: 0.9; }
+  .stored.scanned {
+    background: linear-gradient(135deg, #40BE46 0%, #2d8a32 100%);
+    box-shadow: 0 0 16px rgba(64,190,70,0.45);
+  }
+  .stored.flagged {
+    background: linear-gradient(135deg, #FF6B6B 0%, #c94545 100%);
+    border-color: rgba(255,255,255,0.4);
+    box-shadow: 0 0 22px rgba(255,107,107,0.7);
+  }
+
+  /* Xray guard inside */
+  .guard-xray {
+    position: absolute; left: 540px; top: 200px;
+    width: 80px; text-align: center; z-index: 10;
+  }
+  .guard-xray .label {
+    margin-top: 8px; font-size: 13px; font-weight: 700;
+    color: #6281CF; letter-spacing: 0.3px; line-height: 1.2;
+  }
+  .guard-xray .label .role {
+    display: block; font-weight: 400; color: #B0BEC2; font-size: 10px;
+    margin-top: 3px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .xray-beam {
+    position: absolute; left: 50%; top: 100%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 65px solid transparent;
+    border-right: 65px solid transparent;
+    border-top: 110px solid rgba(64,190,70,0.28);
+    filter: drop-shadow(0 0 10px rgba(64,190,70,0.4));
+  }
+
+  .cve-alert {
+    position: absolute; left: 740px; top: 250px;
+    background: linear-gradient(135deg, #FF6B6B 0%, #c94545 100%);
+    color: #fff; padding: 8px 14px; border-radius: 10px;
+    font-size: 12px; font-weight: 700;
+    box-shadow: 0 8px 20px rgba(255,107,107,0.4);
+    z-index: 15;
+  }
+  .cve-alert::before { content: "⚠"; margin-right: 6px; }
+
+  /* Legend */
+  .legend {
+    position: absolute; bottom: 30px; left: 60px; right: 60px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .legend-card {
+    background: linear-gradient(135deg, #080C25 0%, #0C1D37 100%);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 14px; padding: 20px 24px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .legend-card.curation { border-left: 4px solid #40BE46; }
+  .legend-card.xray { border-left: 4px solid #4457B1; }
+  .legend-icon {
+    width: 56px; height: 56px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .legend-card.curation .legend-icon { background: rgba(64,190,70,0.12); border: 1px solid rgba(64,190,70,0.4); }
+  .legend-card.xray .legend-icon { background: rgba(68,87,177,0.18); border: 1px solid rgba(68,87,177,0.5); }
+  .legend-text h3 { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+  .legend-text h3 span { color: #B0BEC2; font-weight: 400; font-size: 14px; margin-left: 6px; }
+  .legend-text p { font-size: 13px; color: #CED7D9; line-height: 1.5; }
+  .legend-text b { color: #fff; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <div class="header">
+    <div>
+      <h1><span class="green">JFrog Curation</span> &amp; <span class="blue">Xray</span> — Two Lines of Defense</h1>
+      <div class="sub">Curation guards the gate. Xray watches what's inside.</div>
+    </div>
+    <img class="logo" src="assets/jfrog-white.svg" alt="JFrog">
+  </div>
+
+  <div class="scene">
+    <div class="outside-label">Outside · Public Registries</div>
+    <div class="inside-label">Inside · Your Artifactory</div>
+
+    <!-- Supply -->
+    <div class="supply">
+      <div class="supply-title">External Sources</div>
+      <div class="registry-stack">
+        <div class="registry"><span class="dot"></span><b>npm</b> · public</div>
+        <div class="registry"><span class="dot"></span><b>PyPI</b> · public</div>
+        <div class="registry"><span class="dot"></span><b>Maven</b> · central</div>
+        <div class="registry"><span class="dot"></span><b>Docker Hub</b></div>
+      </div>
+    </div>
+
+    <!-- Incoming packages trail -->
+    <div class="pkg-trail">
+      <div class="package bad" style="left: 0; top: 50px;">
+        <div class="pkg-icon">☠</div>
+        <div class="pkg-name">evil-pkg</div>
+      </div>
+      <div class="package" style="left: 30px; top: 160px;">
+        <div class="pkg-icon">📦</div>
+        <div class="pkg-name">cool-lib</div>
+      </div>
+      <div class="package bad" style="left: 60px; top: 270px;">
+        <div class="pkg-icon">⚠</div>
+        <div class="pkg-name">old-jquery</div>
+      </div>
+      <!-- Block marker on the bad package nearest the door -->
+      <div class="marker block" style="left: 100px; top: 280px;">✕</div>
+      <div class="marker pass" style="left: 80px; top: 170px;">✓</div>
+    </div>
+
+    <!-- Building -->
+    <div class="building">
+      <div class="building-name">Trusted Repository</div>
+      <div class="door"></div>
+      <div class="door-frame"></div>
+
+      <!-- Curation guard at door -->
+      <div class="guard-curation">
+        <svg width="64" height="84" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="30" cy="76" rx="18" ry="3" fill="rgba(0,0,0,0.3)"/>
+          <rect x="22" y="55" width="6" height="20" rx="2" fill="#1B2147"/>
+          <rect x="32" y="55" width="6" height="20" rx="2" fill="#1B2147"/>
+          <path d="M14 32 Q14 28 18 28 L42 28 Q46 28 46 32 L46 58 Q46 62 42 62 L18 62 Q14 62 14 58 Z" fill="#40BE46"/>
+          <rect x="14" y="50" width="32" height="4" fill="#1B2147"/>
+          <path d="M30 36 L36 38 L36 44 Q36 48 30 50 Q24 48 24 44 L24 38 Z" fill="#fff"/>
+          <path d="M27 42 L29 44 L33 40" stroke="#40BE46" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="8" y="32" width="8" height="20" rx="3" fill="#36A13B"/>
+          <rect x="44" y="32" width="8" height="20" rx="3" fill="#36A13B"/>
+          <circle cx="12" cy="55" r="4" fill="#fde6ad"/>
+          <circle cx="48" cy="55" r="4" fill="#fde6ad"/>
+          <circle cx="30" cy="20" r="10" fill="#fde6ad"/>
+          <path d="M19 17 Q19 10 30 10 Q41 10 41 17 L42 19 L18 19 Z" fill="#1B2147"/>
+          <rect x="18" y="19" width="24" height="3" fill="#0C1D37"/>
+          <circle cx="30" cy="14" r="2" fill="#40BE46"/>
+        </svg>
+        <div class="guard-label">
+          Curation
+          <span class="role">Door Guard</span>
+        </div>
+      </div>
+
+      <!-- Shelves -->
+      <div class="shelves">
+        <div class="shelf-slot"><div class="stored"><div class="icon">📦</div><div class="name">lodash</div></div></div>
+        <div class="shelf-slot"><div class="stored"><div class="icon">📦</div><div class="name">axios</div></div></div>
+        <div class="shelf-slot"><div class="stored scanned"><div class="icon">⚛</div><div class="name">react</div></div></div>
+        <div class="shelf-slot"><div class="stored"><div class="icon">🐍</div><div class="name">numpy</div></div></div>
+        <div class="shelf-slot"><div class="stored flagged"><div class="icon">☕</div><div class="name">log4j</div></div></div>
+        <div class="shelf-slot"><div class="stored"><div class="icon">📦</div><div class="name">redis</div></div></div>
+        <div class="shelf-slot"><div class="stored"><div class="icon">☕</div><div class="name">spring</div></div></div>
+        <div class="shelf-slot"><div class="stored"><div class="icon">🧠</div><div class="name">tensorflow</div></div></div>
+        <div class="shelf-slot"><div class="stored"><div class="icon">🐍</div><div class="name">requests</div></div></div>
+        <div class="shelf-slot"><div class="stored"><div class="icon">📦</div><div class="name">kafka</div></div></div>
+      </div>
+
+      <!-- Xray guard near react (scanning) -->
+      <div class="guard-xray">
+        <svg width="60" height="80" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="30" cy="76" rx="18" ry="3" fill="rgba(0,0,0,0.3)"/>
+          <rect x="22" y="55" width="6" height="20" rx="2" fill="#0C1D37"/>
+          <rect x="32" y="55" width="6" height="20" rx="2" fill="#0C1D37"/>
+          <path d="M14 32 Q14 28 18 28 L42 28 Q46 28 46 32 L46 58 Q46 62 42 62 L18 62 Q14 62 14 58 Z" fill="#4457B1"/>
+          <rect x="14" y="50" width="32" height="4" fill="#0C1D37"/>
+          <circle cx="30" cy="42" r="6" fill="none" stroke="#fff" stroke-width="2"/>
+          <line x1="34" y1="46" x2="38" y2="50" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="8" y="32" width="8" height="20" rx="3" fill="#324a9a"/>
+          <rect x="44" y="32" width="8" height="20" rx="3" fill="#324a9a"/>
+          <circle cx="12" cy="55" r="4" fill="#fde6ad"/>
+          <circle cx="48" cy="55" r="4" fill="#fde6ad"/>
+          <rect x="46" y="48" width="10" height="14" rx="2" fill="#40BE46" stroke="#fff" stroke-width="1"/>
+          <circle cx="30" cy="20" r="10" fill="#fde6ad"/>
+          <path d="M19 17 Q19 10 30 10 Q41 10 41 17 L42 19 L18 19 Z" fill="#0C1D37"/>
+          <rect x="18" y="19" width="24" height="3" fill="#080C25"/>
+          <circle cx="30" cy="14" r="2" fill="#4457B1"/>
+        </svg>
+        <div class="xray-beam"></div>
+        <div class="label">
+          Xray
+          <span class="role">Internal Patrol</span>
+        </div>
+      </div>
+
+      <!-- CVE alert -->
+      <div class="cve-alert">CVE-2021-44228 · Log4Shell detected</div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-card curation">
+      <div class="legend-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#40BE46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </div>
+      <div class="legend-text">
+        <h3>JFrog Curation <span>· Door Guard (Shift-Left)</span></h3>
+        <p>Blocks external packages <b>before they enter</b> your repository, based on policy. Malicious, license-violating, and vulnerable versions are rejected at the door.</p>
+      </div>
+    </div>
+    <div class="legend-card xray">
+      <div class="legend-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6281CF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m21 21-4.3-4.3"/>
+          <path d="M11 8v6M8 11h6"/>
+        </svg>
+      </div>
+      <div class="legend-text">
+        <h3>JFrog Xray <span>· Internal Patrol (Continuous Scan)</span></h3>
+        <p><b>Continuously scans</b> artifacts already in your repository. When a new CVE is disclosed, it instantly identifies and flags any affected packages.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function fit() {
+    const stage = document.getElementById('stage');
+    const scale = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = `scale(${scale})`;
+    stage.style.transformOrigin = 'center center';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+</script>
+</body>
+</html>
