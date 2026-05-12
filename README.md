@@ -5,10 +5,10 @@ An interactive animation illustrating how JFrog Curation and Xray operate as two
 
 ## Live Demos
 
-- 🇰🇷 한국어판: [Curation vs Xray.html](./Curation%20vs%20Xray.html)
-- 🇬🇧 English: [Curation vs Xray - EN.html](./Curation%20vs%20Xray%20-%20EN.html)
+- 🇰🇷 한국어판: <https://changwy-jfrog.github.io/jfrogContents/Curation%20vs%20Xray.html>
+- 🇬🇧 English: <https://changwy-jfrog.github.io/jfrogContents/Curation%20vs%20Xray%20-%20EN.html>
 
-> GitHub Pages가 활성화되면 위 링크가 바로 재생되는 페이지로 연결됩니다.
+> GitHub Pages로 호스팅되는 실제 재생 페이지입니다. 저장소 내 `.html` 파일을 직접 클릭하면 소스 코드 뷰로 열리니, 위 링크를 사용해 주세요.
 
 ## Story
 
