@@ -1,0 +1,256 @@
+/* ============================================================
+   JFrog Marketing Design System — Foundation Tokens
+   Source: JFrog Marketing Design System 2026 (Figma)
+   ============================================================ */
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("./fonts/OpenSans-Variable.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("./fonts/OpenSans-Italic-Variable.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* -------- CORE COLOR TOKENS -------- */
+  /* Brand */
+  --color-brand-green:        #40BE46;   /* JFrog Green — primary accent */
+  --color-brand-green-shade:  #36A13B;   /* secondary / pressed */
+  --color-brand-green-tint:   #5BD161;
+  --color-brand-indigo:       #4457B1;   /* secondary brand */
+  --color-brand-indigo-deep:  #1B2147;
+
+  /* Surfaces (dark) */
+  --color-navy-900:    #0C1D37;   /* primary surface */
+  --color-navy-1000:   #080C25;   /* deepest surface */
+  --color-navy-700:    #1B2147;   /* elevated surface */
+  --color-navy-500:    #324152;   /* mid-elevation */
+
+  /* Indigo / blue accents */
+  --color-indigo-400:  #6281CF;
+  --color-indigo-300:  #4E67C2;
+  --color-indigo-100:  #CCD8F1;
+  --color-indigo-50:   #A9C0E7;
+
+  /* Neutrals */
+  --color-neutral-50:   #F9FAFA;
+  --color-neutral-100:  #F2F5F5;
+  --color-neutral-200:  #E4E9EA;
+  --color-neutral-300:  #CED7D9;
+  --color-neutral-400:  #B0BEC2;
+  --color-neutral-500:  #8C9FA4;
+  --color-neutral-600:  #718288;
+  --color-neutral-700:  #5B6B70;
+  --color-neutral-800:  #4C585C;
+  --color-neutral-900:  #323B3E;
+  --color-neutral-950:  #1E2528;
+  --color-neutral-1000: #111517;
+
+  /* B / W */
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+
+  /* Accent / supporting */
+  --color-cream:       #FDE6AD;
+  --color-amber:       #F9C37A;
+  --color-sky:         #6897B8;
+  --color-mint:        #A2C9D2;
+
+  /* -------- SEMANTIC SURFACE -------- */
+  --bg-primary:    var(--color-navy-900);   /* default page bg */
+  --bg-secondary:  var(--color-navy-1000);  /* cards on dark */
+  --bg-tertiary:   var(--color-navy-700);   /* elevated panel */
+  --bg-inverse:    var(--color-white);
+  --bg-field:      var(--color-navy-1000);
+  --bg-form:       var(--color-navy-700);
+  --bg-brand:      var(--color-brand-green);
+  --bg-tab-default:#0C1D37;
+  --bg-tab-hover:  #1B2147;
+  --bg-error:      #FFE4E4;
+  --bg-disabled:   #324152;
+
+  /* -------- SEMANTIC TEXT -------- */
+  --text-primary:    var(--color-white);     /* on dark */
+  --text-secondary:  #E4E9EA;
+  --text-tertiary:   #B0BEC2;
+  --text-brand:      var(--color-brand-green);
+  --text-onBrand:    var(--color-white);
+  --text-error:      #FF6B6B;
+  --text-disabled:   #5B6B70;
+  --text-inverse:    var(--color-navy-900);
+
+  /* -------- SEMANTIC BORDER -------- */
+  --border-medium:    rgba(255,255,255,0.18);
+  --border-subtle:    rgba(255,255,255,0.08);
+  --border-brand:     var(--color-brand-green);
+  --border-secondary: var(--color-indigo-300);
+  --border-error:     #FF6B6B;
+  --border-disabled:  #4C585C;
+  --border-inverse:   var(--color-navy-900);
+
+  /* -------- SEMANTIC GRADIENTS -------- */
+  --gradient-card-default:  linear-gradient(135deg, #080C25 0%, #0C1D37 100%);
+  --gradient-card-hover:    linear-gradient(135deg, #14193D 0%, #1B2147 100%);
+  --gradient-testimony:     linear-gradient(to right, #14193D 0%, #1B2147 100%);
+  --gradient-green-blue:    linear-gradient(135deg, #1E3A66 0%, #36A13B 100%);
+  --gradient-brand:         linear-gradient(135deg, #36A13B 0%, #4E67C2 100%);
+
+  /* -------- CORE TYPE TOKENS -------- */
+  --font-sans: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --fs-xl4: 4rem;     /* 64 */
+  --fs-xl3: 3.75rem;  /* 60 */
+  --fs-xl2: 3.5rem;   /* 56 */
+  --fs-xl1: 2.875rem; /* 46 */
+  --fs-l1:  3rem;     /* 48 */
+  --fs-l2:  2.625rem; /* 42 */
+  --fs-l3:  2.5rem;   /* 40 */
+  --fs-l4:  2.25rem;  /* 36 */
+  --fs-m1:  2rem;     /* 32 */
+  --fs-m2:  1.75rem;  /* 28 */
+  --fs-m3:  1.5rem;   /* 24 */
+  --fs-s1:  1.25rem;  /* 20 */
+  --fs-s2:  1.125rem; /* 18 */
+  --fs-s3:  1rem;     /* 16 */
+  --fs-xs1: 0.875rem; /* 14 */
+  --fs-xs2: 0.75rem;  /* 12 */
+  --fs-xs3: 0.625rem; /* 10 */
+
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-150: 0.75rem;
+  --lh-200: 1rem;
+  --lh-250: 1.25rem;
+  --lh-300: 1.5rem;
+  --lh-350: 1.75rem;
+  --lh-400: 2rem;
+  --lh-450: 2.25rem;
+  --lh-500: 3rem;
+  --lh-575: 2.875rem;
+  --lh-700: 3.5rem;
+  --lh-750: 3.75rem;
+  --lh-800: 4rem;
+  --lh-900: 5rem;
+
+  /* -------- SPACING -------- */
+  --sp-25:   4px;
+  --sp-50:   6px;
+  --sp-75:   8px;
+  --sp-100:  12px;
+  --sp-150:  16px;
+  --sp-200:  20px;
+  --sp-250:  24px;
+  --sp-300:  32px;
+  --sp-400:  36px;
+  --sp-450:  40px;
+  --sp-500:  48px;
+  --sp-600:  64px;
+  --sp-800:  72px;
+  --sp-900:  80px;
+  --sp-1000: 96px;
+  --sp-1200: 128px;
+
+  /* -------- RADIUS -------- */
+  --r-xs:    4px;
+  --r-sm:    8px;
+  --r-md:    16px;
+  --r-lg:    20px;
+  --r-xl:    28px;
+  --r-round: 9999px;
+
+  /* -------- BORDER WIDTH -------- */
+  --bw-medium: 1px;
+  --bw-thick:  2px;
+
+  /* -------- SHADOWS -------- */
+  --shadow-sm:  0 2px 6px 0 rgba(0,0,0,0.10);
+  --shadow-md:  0 6px 15px -2px rgba(0,0,0,0.10);
+  --shadow-lg:  0 8px 24px -3px rgba(0,0,0,0.10);
+  --shadow-xl:  0 20px 40px -8px rgba(0,0,0,0.20);
+  --shadow-xxl: 0 25px 60px -15px rgba(0,0,0,0.70);
+
+  /* -------- BREAKPOINTS / LAYOUT -------- */
+  --bp-2xl:        1440px;
+  --bp-xl:         1200px;
+  --bp-lg:          992px;
+  --bp-md:          768px;
+  --bp-sm:          480px;
+  --container-max:  1440px;
+  --content-max:    1360px;
+  --gutter:           32px;
+  --pad-x:            40px;
+
+  /* -------- MOTION -------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+  --dur-slow: 380ms;
+}
+
+/* ============================================================
+   SEMANTIC TYPE — typography.* tokens
+   ============================================================ */
+.t-h1-large    { font-family: var(--font-sans); font-weight: 700; font-size: var(--fs-xl3); line-height: var(--lh-700); letter-spacing: -0.5px; }
+.t-h1-medium   { font-family: var(--font-sans); font-weight: 700; font-size: var(--fs-xl1); line-height: var(--lh-575); letter-spacing: -0.3px; }
+.t-h1-small    { font-family: var(--font-sans); font-weight: 700; font-size: var(--fs-l2);  line-height: var(--lh-500); }
+.t-h2-xl       { font-family: var(--font-sans); font-weight: 700; font-size: var(--fs-l1);  line-height: var(--lh-575); }
+.t-h2-large    { font-family: var(--font-sans); font-weight: 700; font-size: var(--fs-l2);  line-height: var(--lh-500); }
+.t-h2-small    { font-family: var(--font-sans); font-weight: 700; font-size: var(--fs-l4);  line-height: var(--lh-450); }
+.t-h3-large    { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-l4);  line-height: var(--lh-450); }
+.t-h3-medium   { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-m1);  line-height: var(--lh-400); }
+.t-h3-small    { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-m2);  line-height: var(--lh-350); }
+.t-subheading  { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-m3);  line-height: var(--lh-350); }
+.t-title-1     { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-m1);  line-height: var(--lh-400); }
+.t-title-2     { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-m2);  line-height: var(--lh-350); }
+.t-title-3     { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-m3);  line-height: var(--lh-350); }
+.t-body-xl     { font-family: var(--font-sans); font-weight: 400; font-size: var(--fs-m2);  line-height: var(--lh-400); }
+.t-body-lg     { font-family: var(--font-sans); font-weight: 400; font-size: var(--fs-m3);  line-height: var(--lh-350); }
+.t-body-md     { font-family: var(--font-sans); font-weight: 400; font-size: var(--fs-s2);  line-height: var(--lh-300); }
+.t-body-sm     { font-family: var(--font-sans); font-weight: 400; font-size: var(--fs-s3);  line-height: var(--lh-300); }
+.t-label-xl    { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-m3);  line-height: var(--lh-300); }
+.t-label-lg    { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-s3);  line-height: var(--lh-250); }
+.t-label-md    { font-family: var(--font-sans); font-weight: 400; font-size: var(--fs-xs1); line-height: var(--lh-200); }
+.t-label-sm    { font-family: var(--font-sans); font-weight: 400; font-size: var(--fs-xs2); line-height: var(--lh-200); }
+
+/* ============================================================
+   ELEMENT BASE STYLES
+   ============================================================ */
+html, body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-s3);
+  line-height: var(--lh-300);
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+
+h1 { font: 700 var(--fs-xl3)/var(--lh-700) var(--font-sans); letter-spacing: -0.5px; margin: 0; }
+h2 { font: 700 var(--fs-l2)/var(--lh-500) var(--font-sans);  margin: 0; }
+h3 { font: 600 var(--fs-m1)/var(--lh-400) var(--font-sans);  margin: 0; }
+h4 { font: 600 var(--fs-m3)/var(--lh-350) var(--font-sans);  margin: 0; }
+p  { font: 400 var(--fs-s2)/var(--lh-300) var(--font-sans);  margin: 0; }
+
+a {
+  color: var(--color-brand-green);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+a:hover { color: var(--color-brand-green-tint); }
+
+code, pre, kbd, samp {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+::selection {
+  background: var(--color-brand-green);
+  color: var(--color-white);
+}
