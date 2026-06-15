@@ -1,4 +1,24 @@
-# JFrog Curation & Xray — Animated Demo
+# JFrog Contents
+
+JFrog 제품군 관련 인터랙티브 데모, 보안 인증 매핑 문서 등 프레젠테이션용 HTML 자료 모음입니다.
+
+---
+
+## ISMS-P 통제항목 매핑
+
+**[JFrog × ISMS-P 정규인증 통제항목 매핑](https://changwy-jfrog.github.io/jfrogContents/jfrog-isms-p-mapping.html)**
+
+JFrog Artifactory, Curation, Advanced Security, AppTrust 4개 제품군이 ISMS-P(정보보호 및 개인정보보호 관리체계) 인증기준 2.0의 통제항목과 어떻게 매핑되는지를 정리한 레퍼런스 문서입니다.
+
+| 항목 | 내용 |
+|------|------|
+| 기준 | ISMS-P 인증기준 2.0 (과학기술정보통신부·개인정보보호위원회 고시) |
+| 매핑 통제항목 | 28개 (섹션 1 관리체계 4개 + 섹션 2 보호대책 24개) |
+| 포함 내용 | 제품별 기여 상세 설명 + 핵심/부분 기여 요약 매트릭스 |
+
+---
+
+## Curation & Xray — Animated Demo
 
 JFrog Curation과 Xray가 어떻게 서로 다른 보안 계층에서 동작하는지를 보여주는 인터랙티브 애니메이션입니다.
 An interactive animation illustrating how JFrog Curation and Xray operate as two distinct security layers.
