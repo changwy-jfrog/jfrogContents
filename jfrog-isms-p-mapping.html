@@ -404,6 +404,38 @@
     </tbody>
   </table>
 
+  <!-- 1.4 관리체계 점검 및 개선 -->
+  <div style="font-size:13px; font-weight:700; color:#475569; margin:20px 0 8px; padding-left:4px;">
+    1.4 관리체계 점검 및 개선
+  </div>
+  <table class="mapping-table">
+    <thead>
+      <tr>
+        <th style="width:90px">통제항목</th>
+        <th style="width:160px">통제항목명</th>
+        <th>JFrog 제품 기여 내용</th>
+        <th style="width:160px">관련 제품</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="ctrl-id">1.4.1</span></td>
+        <td><span class="ctrl-name">법적 요구사항 준수 검토</span></td>
+        <td class="ctrl-how">
+          Curation과 Advanced Security(Xray)는 <strong>오픈소스 라이선스 컴플라이언스</strong>를 자동 검사합니다.
+          GPL·LGPL·AGPL 등 카피레프트 라이선스와 조직의 허용 라이선스 목록을 비교하여 법적 위반 패키지를 배포 전에 차단합니다.
+          라이선스 컴플라이언스 리포트 자동 생성을 통해 오픈소스 사용에 관한 법적 요구사항 준수 현황을 주기적으로 검토할 수 있습니다.
+        </td>
+        <td>
+          <div class="chips">
+            <span class="chip chip-c">Curation</span>
+            <span class="chip chip-as">Advanced Security</span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
   <!-- ──────────────────────────────────────
        섹션 2. 보호대책 요구사항
   ─────────────────────────────────────── -->
@@ -461,7 +493,7 @@
         <td><span class="ctrl-name">사용자 계정 관리</span></td>
         <td class="ctrl-how">
           Artifactory는 로컬 계정, <strong>LDAP·Active Directory 연동, SAML/SCIM 프로비저닝</strong>을 지원하여 사용자 계정의 생성·변경·삭제를 중앙에서 관리합니다.
-          비활성 계정 자동 비활성화 정책 설정이 가능합니다.
+          비활성 계정 비활성화는 SCIM 연동된 IdP(Okta·Azure AD 등)의 라이프사이클 관리를 통해 처리됩니다.
         </td>
         <td>
           <div class="chips">
@@ -473,13 +505,13 @@
         <td><span class="ctrl-id">2.5.2</span></td>
         <td><span class="ctrl-name">사용자 인증</span></td>
         <td class="ctrl-how">
-          Artifactory는 <strong>SSO(SAML 2.0, OIDC), MFA, API Key, Access Token</strong>을 통한 다중 인증 방식을 지원합니다.
-          AppTrust는 아티팩트 배포·소비 시 <strong>서명 기반 신원 검증</strong>을 추가하여 비인가 배포를 원천 차단합니다.
+          Artifactory는 <strong>SSO(SAML 2.0, OIDC), API Key, Access Token</strong>을 통한 다중 인증 방식을 지원합니다.
+          MFA는 Artifactory 자체 기능이 아닌 SSO로 연동된 IdP(Okta·Azure AD 등)에서 강제 적용됩니다. CI/CD 시스템에는 만료 기한이 있는 Scoped Token을 발급하여 자격증명 노출 위험을 최소화합니다.
+          <em style="font-size:11px;color:#94A3B8;">※ AppTrust의 아티팩트 서명·검증은 소프트웨어 무결성(2.8.5) 영역이며, 사용자 신원 인증(2.5.2)과는 별개입니다.</em>
         </td>
         <td>
           <div class="chips">
             <span class="chip chip-a">Artifactory</span>
-            <span class="chip chip-at">AppTrust</span>
           </div>
         </td>
       </tr>
@@ -543,7 +575,7 @@
         <td><span class="ctrl-name">정보시스템 접근</span></td>
         <td class="ctrl-how">
           Artifactory의 <strong>Permission Target(저장소 단위 권한 설정)</strong>으로 사용자·그룹별 읽기·쓰기·배포 권한을 세밀하게 제어합니다.
-          Curation은 정책에 위배되는 패키지 접근을 자동으로 차단합니다.
+          <em style="font-size:11px;color:#94A3B8;">※ Curation은 패키지 컴플라이언스(취약·악성 패키지 차단)를 담당하며, 사용자의 시스템 접근 통제인 이 항목에는 해당하지 않습니다.</em>
         </td>
         <td>
           <div class="chips">
@@ -747,12 +779,25 @@
         <td><span class="ctrl-id">2.9.5</span></td>
         <td><span class="ctrl-name">로그 및 접속기록 점검</span></td>
         <td class="ctrl-how">
-          Artifactory 감사 로그는 <strong>사용자별·저장소별·시간대별 접근 패턴 분석</strong>을 지원하며, Advanced Security의 이상행위 탐지와 연계하여 비정상 접속을 자동 감지합니다.
+          Artifactory 감사 로그는 <strong>사용자별·저장소별·시간대별 접근 패턴 분석</strong>이 가능한 구조화된 로그를 제공합니다.
+          이상행위 감지는 Artifactory 자체 기능이 아니라, 로그를 수집한 <strong>SIEM(Splunk·Datadog·ELK)</strong>의 Rule·ML 엔진이 수행합니다. Advanced Security는 접속 이상행위가 아닌 아티팩트·코드 취약점 분석에 집중합니다.
         </td>
         <td>
           <div class="chips">
             <span class="chip chip-a">Artifactory</span>
-            <span class="chip chip-as">Advanced Security</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="ctrl-id">2.9.7</span></td>
+        <td><span class="ctrl-name">정보자산의 재사용 및 폐기</span></td>
+        <td class="ctrl-how">
+          Artifactory의 <strong>Retention Policy(보존 기간 정책)</strong>와 <strong>Cleanup Workers(자동 폐기 작업)</strong>를 통해 수명이 종료된 아티팩트(오래된 스냅샷, 미사용 이미지 등)를 주기적으로 삭제합니다.
+          Storage Quota 설정과 연계하여 불필요한 자산이 장기 보존되지 않도록 관리합니다. Artifactory는 아티팩트 메타데이터를 기록하므로 폐기 이력 추적도 가능합니다.
+        </td>
+        <td>
+          <div class="chips">
+            <span class="chip chip-a">Artifactory</span>
           </div>
         </td>
       </tr>
@@ -819,7 +864,7 @@
         <td><span class="ctrl-name">악성코드 통제</span></td>
         <td class="ctrl-how">
           Curation은 <strong>악성 패키지(Malicious Package), 타이포스쿼팅, 의존성 혼동 공격</strong>을 자동 탐지하고 차단합니다.
-          Advanced Security는 바이너리 내 악성 코드 패턴 및 알려진 악성 해시를 실시간으로 스캔합니다.
+          Advanced Security는 <strong>JFrog Research DB 기반으로 알려진 악성 패키지를 탐지</strong>합니다. 전통적인 AV 방식의 바이너리 패턴 스캔이 아니라, 패키지 출처·메타데이터·행위 분석을 통한 악성 패키지 식별입니다.
         </td>
         <td>
           <div class="chips">
@@ -866,7 +911,7 @@
         <td><span class="ctrl-name">취약점 점검 및 조치</span></td>
         <td class="ctrl-how">
           Advanced Security는 <strong>저장소 전체를 지속적으로 스캔</strong>하며, 새로운 CVE가 발표되면 기존 아티팩트에 대해 자동 재평가합니다.
-          SBOM 기반으로 영향 받는 애플리케이션 범위를 신속하게 식별하고, 수정 버전 업그레이드 PR을 자동 생성합니다.
+          SBOM 기반으로 영향 받는 애플리케이션 범위를 신속하게 식별합니다. PR에 취약점 코멘트를 자동으로 추가하는 기능은 <strong>Frogbot(별도 설치 필요)</strong>을 통해 제공됩니다.
         </td>
         <td>
           <div class="chips">
@@ -878,8 +923,9 @@
         <td><span class="ctrl-id">2.11.3</span></td>
         <td><span class="ctrl-name">이상행위 분석 및 모니터링</span></td>
         <td class="ctrl-how">
-          Artifactory 감사 로그를 기반으로 <strong>비정상 다운로드 패턴, 새벽 시간대 접속, 대용량 데이터 유출 시도</strong> 등을 SIEM 연동을 통해 실시간 탐지합니다.
-          Advanced Security의 컨텍스트 분석은 취약 함수가 실제 호출되는지 분석하여 오탐을 줄이고 실질적 위협에 집중합니다.
+          Artifactory는 <strong>구조화된 감사 로그(JSON 포맷)</strong>를 Splunk·Datadog·ELK 등 SIEM으로 실시간 전송합니다.
+          비정상 다운로드 패턴, 새벽 시간대 접속, 대용량 데이터 유출 시도 등 이상행위 탐지 Rule은 <strong>SIEM이 정의·수행</strong>합니다 — Artifactory는 데이터 소스 역할입니다.
+          Advanced Security의 Contextual Analysis는 취약 함수가 실제 호출되는지를 분석하여 오탐을 줄이는 기능이며, 접속 이상행위 모니터링과는 별개입니다.
         </td>
         <td>
           <div class="chips">
@@ -938,6 +984,13 @@
           <td><span class="check pri">●</span></td>
           <td></td>
         </tr>
+        <tr>
+          <th>1.4.1 법적 요구사항 준수 검토</th>
+          <td></td>
+          <td><span class="check pri">●</span></td>
+          <td><span class="check pri">●</span></td>
+          <td></td>
+        </tr>
 
         <tr><td colspan="5" class="cat-header">2. 보호대책 요구사항</td></tr>
         <tr>
@@ -959,7 +1012,7 @@
           <td><span class="check pri">●</span></td>
           <td></td>
           <td></td>
-          <td><span class="check sec">◐</span></td>
+          <td></td>
         </tr>
         <tr>
           <th>2.5.5 특수 계정·권한 관리</th>
@@ -985,7 +1038,7 @@
         <tr>
           <th>2.6.2 정보시스템 접근</th>
           <td><span class="check pri">●</span></td>
-          <td><span class="check sec">◐</span></td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
@@ -1063,7 +1116,14 @@
           <th>2.9.5 로그 및 접속기록 점검</th>
           <td><span class="check pri">●</span></td>
           <td></td>
-          <td><span class="check sec">◐</span></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>2.9.7 정보자산의 재사용 및 폐기</th>
+          <td><span class="check pri">●</span></td>
+          <td></td>
+          <td></td>
           <td></td>
         </tr>
         <tr>
@@ -1110,9 +1170,9 @@
         </tr>
         <tr>
           <th>2.11.3 이상행위 분석·모니터링</th>
-          <td><span class="check pri">●</span></td>
+          <td><span class="check sec">◐</span></td>
           <td></td>
-          <td><span class="check pri">●</span></td>
+          <td></td>
           <td></td>
         </tr>
       </tbody>
